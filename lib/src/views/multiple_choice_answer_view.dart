@@ -101,6 +101,10 @@ class _MultipleChoiceAnswerView extends State<MultipleChoiceAnswerView> {
                     padding: const EdgeInsets.symmetric(horizontal: 14.0),
                     child: ListTile(
                       title: TextField(
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
                         onChanged: (v) {
                           int? currentIndex;
                           final otherTextChoice = _selectedChoices
@@ -130,9 +134,12 @@ class _MultipleChoiceAnswerView extends State<MultipleChoiceAnswerView> {
                           });
                         },
                         decoration: InputDecoration(
-                          labelText: 'Other',
-                          labelStyle: Theme.of(context).textTheme.headlineSmall,
-                          hintText: 'Write other information here',
+                          labelText: 'Otro',
+                          // labelStyle: Theme.of(context).textTheme.headlineSmall,
+                          labelStyle: TextStyle(
+                            color: Colors.black
+                          ),
+                          hintText: 'Escribe otro aquí',
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                         ),
                       ),

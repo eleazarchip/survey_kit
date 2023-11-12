@@ -11,6 +11,8 @@ class ScaleAnswerFormat implements AnswerFormat {
   final double step;
   final String maximumValueDescription;
   final String minimumValueDescription;
+  @JsonKey(defaultValue: const [])
+  final List<dynamic> opciones;
   final bool showValue;
 
   const ScaleAnswerFormat({
@@ -20,6 +22,7 @@ class ScaleAnswerFormat implements AnswerFormat {
     required this.step,
     this.maximumValueDescription = '',
     this.minimumValueDescription = '',
+    this.opciones = const [],
     this.showValue = true,
   }) : super();
 

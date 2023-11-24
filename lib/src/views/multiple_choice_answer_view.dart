@@ -24,7 +24,8 @@ class MultipleChoiceAnswerView extends StatefulWidget {
 class _MultipleChoiceAnswerView extends State<MultipleChoiceAnswerView> {
   late final DateTime _startDateTime;
   late final MultipleChoiceAnswerFormat _multipleChoiceAnswer;
-
+  
+  int numberSelected = 0;
   List<TextChoice> _selectedChoices = [];
 
   @override
@@ -45,9 +46,12 @@ class _MultipleChoiceAnswerView extends State<MultipleChoiceAnswerView> {
         id: widget.questionStep.stepIdentifier,
         startDate: _startDateTime,
         endDate: DateTime.now(),
-        valueIdentifier:
-            _selectedChoices.map((choices) => choices.value).join(','),
-        result: _selectedChoices,
+        valueIdentifier: _multipleChoiceAnswer.showNumbers ? 
+          _multipleChoiceAnswer.textChoices.map((choices) => choices.text).join(',') :
+          _selectedChoices.map((choices) => choices.value).join(','),
+        result: _multipleChoiceAnswer.showNumbers ?
+          _multipleChoiceAnswer.textChoices : 
+           _selectedChoices,
       ),
       isValid: widget.questionStep.isOptional || _selectedChoices.isNotEmpty,
       title: widget.questionStep.title.isNotEmpty
@@ -61,7 +65,7 @@ class _MultipleChoiceAnswerView extends State<MultipleChoiceAnswerView> {
         padding: const EdgeInsets.symmetric(horizontal: 14.0),
         child: Column(
           children: [
-            Padding(
+            _multipleChoiceAnswer.showNumbers ? const SizedBox.shrink() : Padding(
               padding: const EdgeInsets.only(bottom: 32.0),
               child: Text(
                 widget.questionStep.text,
@@ -74,9 +78,40 @@ class _MultipleChoiceAnswerView extends State<MultipleChoiceAnswerView> {
                 Divider(
                   color: Colors.grey,
                 ),
-                ..._multipleChoiceAnswer.textChoices
-                    .map(
-                      (TextChoice tc) => SelectionListTile(
+
+                if (_multipleChoiceAnswer.showNumbers) ...[
+                  SizedBox(
+                    height: 300,
+                    child: ReorderableListView(
+                      buildDefaultDragHandles: false,
+                      children: <Widget>[
+                        for (int index = 0; index < _multipleChoiceAnswer.textChoices.length; index++)
+                          ListTile(
+                            key: Key('$index'),
+                            title: Text(
+                              '${(index+1)}.  ${_multipleChoiceAnswer.textChoices[index].text}',
+                            ),
+                            trailing: ReorderableDragStartListener(
+                              index: index,
+                              child: const Icon(Icons.drag_handle),
+                            ),
+                          ),                        
+                      ],
+                      onReorder: (int oldIndex, int newIndex) {
+                        setState(() {
+                          if (oldIndex < newIndex) {
+                            newIndex -= 1;
+                          }
+                          final TextChoice item = _multipleChoiceAnswer.textChoices.removeAt(oldIndex);
+                          _multipleChoiceAnswer.textChoices.insert(newIndex, item);
+                        });
+                      },
+                    ),
+                  )
+                  
+                ] else ...[
+                  ..._multipleChoiceAnswer.textChoices
+                    .map((TextChoice tc) => SelectionListTile(
                         text: tc.text,
                         onTap: () {
                           setState(
@@ -96,6 +131,8 @@ class _MultipleChoiceAnswerView extends State<MultipleChoiceAnswerView> {
                       ),
                     )
                     .toList(),
+                ],
+
                 if (_multipleChoiceAnswer.otherField) ...[
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 14.0),

@@ -25,7 +25,8 @@ class DateAnswerView extends StatefulWidget {
 }
 
 class _DateAnswerViewState extends State<DateAnswerView> {
-  final DateFormat _dateFormat = DateFormat('E, MMM d');
+  final DateFormat _dateFormat = DateFormat('E, MMM d', 'es');
+  // final DateFormat _dateFormat = DateFormat('yyyy-MM-dd');
   final DateTime _startDate = DateTime.now();
   late DateAnswerFormat _dateAnswerFormat;
   DateTime? _result;

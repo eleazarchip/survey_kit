@@ -3,6 +3,7 @@ import 'package:survey_kit/src/result/question/boolean_question_result.dart';
 import 'package:survey_kit/src/result/question/date_question_result.dart';
 import 'package:survey_kit/src/result/question/double_question_result.dart';
 import 'package:survey_kit/src/result/question/integer_question_result.dart';
+import 'package:survey_kit/src/result/question/iterative_custom_result.dart';
 import 'package:survey_kit/src/result/question/multiple_choice_question_result.dart';
 import 'package:survey_kit/src/result/question/multiple_double_question_result.dart';
 import 'package:survey_kit/src/result/question/scale_question_result.dart';
@@ -118,8 +119,13 @@ class _Converter implements JsonConverter<List<QuestionResult>, Object> {
         final qrJson = qr.toJson();
         qrJson['type'] = (VideoStepResult).toString();
         allQuestionResultsEncoded.add(qrJson);
+      } else if(qr is IterativeCustomResult) {
+        final qrJson = qr.toJson();
+        qrJson['type'] = (IterativeCustomResult).toString();
+        allQuestionResultsEncoded.add(qrJson);
       } else {
-        throw ('Unhandled Question Result Type');
+        // allQuestionResultsEncoded.add([]);
+        // throw ('Unhandled Question Result Type');
       }
     }
 
@@ -159,6 +165,8 @@ class _Converter implements JsonConverter<List<QuestionResult>, Object> {
         results.add(CompletionStepResult.fromJson(qData));
       } else if (qType == (VideoStepResult).toString()) {
         results.add(VideoStepResult.fromJson(qData));
+      } else if (qType == (IterativeCustomResult).toString()) {
+        results.add(IterativeCustomResult.fromJson(qData));
       } else {
         throw ('Unhandled Question Result Type');
       }

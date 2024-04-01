@@ -111,7 +111,7 @@ class _ImageAnswerViewState extends State<ImageAnswerView> {
             child: ListBody(
               children: <Widget>[
                 GestureDetector(
-                  child: Text('Take a picture'),
+                  child: Text('Tomar de la cámara'),
                   onTap: () {
                     if (_imageAnswerFormat.hintImage != null &&
                         _imageAnswerFormat.hintTitle != null) {
@@ -128,7 +128,7 @@ class _ImageAnswerViewState extends State<ImageAnswerView> {
                           actions: [
                             TextButton(
                                 onPressed: () => _openCamera(),
-                                child: Text('Open Camera')),
+                                child: Text('Abrir Cámara')),
                           ],
                         ),
                       );
@@ -140,7 +140,7 @@ class _ImageAnswerViewState extends State<ImageAnswerView> {
                 Padding(padding: EdgeInsets.all(8.0)),
                 _imageAnswerFormat.useGallery
                     ? GestureDetector(
-                        child: Text('Select from Gallery'),
+                        child: Text('Seleccionar de la Gallería'),
                         onTap: () {
                           _openGallery();
                         },

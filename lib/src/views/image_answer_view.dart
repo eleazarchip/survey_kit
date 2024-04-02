@@ -161,7 +161,9 @@ class _ImageAnswerViewState extends State<ImageAnswerView> {
       source: ImageSource.camera,
     );
 
-    Navigator.pop(context);
+    // Navigator.pop(context);
+    // Navigator.of(context).pop();
+    Navigator.of(context, rootNavigator: true).pop();
 
     picture?.readAsBytes().then((value) {
       setState(() {

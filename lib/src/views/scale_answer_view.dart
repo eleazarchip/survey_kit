@@ -183,9 +183,9 @@ class _ScaleAnswerViewState extends State<ScaleAnswerView> {
         id: widget.questionStep.stepIdentifier,
         startDate: _startDate,
         endDate: DateTime.now(),
-        valueIdentifier: _sliderValue.toString(),
+        valueIdentifier: _scaleAnswerFormat.opciones.length > 0 ? _slidersList.join(',') : _sliderValue.toString(),
         // result: _sliderValue,
-        result: _scaleAnswerFormat.opciones.length > 0?_slidersList[0].toDouble():_sliderValue.toDouble(),
+        result: _scaleAnswerFormat.opciones.length > 0? _slidersList[0].toDouble() : _sliderValue.toDouble(),
       ),
       title: widget.questionStep.title.isNotEmpty
         ? Text(

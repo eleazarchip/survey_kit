@@ -48,7 +48,7 @@ class _MultipleChoiceAnswerView extends State<MultipleChoiceAnswerView> {
         endDate: DateTime.now(),
         valueIdentifier: _multipleChoiceAnswer.showNumbers ? 
           _multipleChoiceAnswer.textChoices.map((choices) => choices.text).join(',') :
-          _selectedChoices.map((choices) => choices.value).join(','),
+          _selectedChoices.map((choices) => choices.text).join(','),
         result: _multipleChoiceAnswer.showNumbers ?
           _multipleChoiceAnswer.textChoices : 
            _selectedChoices,

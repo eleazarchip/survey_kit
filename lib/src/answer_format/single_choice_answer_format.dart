@@ -8,10 +8,16 @@ part 'single_choice_answer_format.g.dart';
 class SingleChoiceAnswerFormat implements AnswerFormat {
   final List<TextChoice> textChoices;
   final TextChoice? defaultSelection;
+  @JsonKey(defaultValue: false)
+  final bool otherField;
+  @JsonKey(defaultValue: 'Otro')
+  final String otherText;
 
   const SingleChoiceAnswerFormat({
     required this.textChoices,
     this.defaultSelection,
+    this.otherField = false,
+    this.otherText = 'Otro',
   }) : super();
 
   factory SingleChoiceAnswerFormat.fromJson(Map<String, dynamic> json) =>

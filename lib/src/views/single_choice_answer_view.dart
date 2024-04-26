@@ -25,9 +25,14 @@ class _SingleChoiceAnswerViewState extends State<SingleChoiceAnswerView> {
   late final SingleChoiceAnswerFormat _singleChoiceAnswerFormat;
   TextChoice? _selectedChoice;
 
+  late final TextEditingController _controller;
+  late FocusNode focusNodeTextOther;
+
   @override
   void initState() {
     super.initState();
+    _controller = TextEditingController();
+    focusNodeTextOther = FocusNode();
     _singleChoiceAnswerFormat =
         widget.questionStep.answerFormat as SingleChoiceAnswerFormat;
     _selectedChoice =
@@ -36,8 +41,15 @@ class _SingleChoiceAnswerViewState extends State<SingleChoiceAnswerView> {
   }
 
   @override
+  void dispose() {
+    focusNodeTextOther.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StepView(
+      
       step: widget.questionStep,
       resultFunction: () => SingleChoiceQuestionResult(
         id: widget.questionStep.stepIdentifier,
@@ -76,6 +88,10 @@ class _SingleChoiceAnswerViewState extends State<SingleChoiceAnswerView> {
                     return SelectionListTile(
                       text: tc.text,
                       onTap: () {
+                        if (_singleChoiceAnswerFormat.otherField) {
+                          focusNodeTextOther.unfocus();
+                          _controller.text = '';
+                        }
                         if (_selectedChoice == tc) {
                           _selectedChoice = null;
                         } else {
@@ -89,6 +105,55 @@ class _SingleChoiceAnswerViewState extends State<SingleChoiceAnswerView> {
                 ).toList(),
               ],
             ),
+            if (_singleChoiceAnswerFormat.otherField) ...[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                child: ListTile(
+                  title: TextField(
+                    controller: _controller,
+                    focusNode: focusNodeTextOther,
+                    
+                    onTap: () {
+                      if (_controller.text.isNotEmpty) {
+                        _selectedChoice = null;
+                        setState(() { });
+                      }
+                    },
+                    onTapOutside: (event) {
+                      if (_controller.text.isNotEmpty) {
+                        _selectedChoice = TextChoice(
+                          text: _controller.text, 
+                          value: _controller.text
+                        );
+                        setState(() {});
+                      }
+                    },
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                    onChanged: (String v) {
+                      _selectedChoice = TextChoice(text: v, value: v);
+                      setState(() {
+                        if (v.isEmpty) {
+                          _selectedChoice = null;
+                        } else if (v.isNotEmpty) {
+                          final updatedTextChoice = TextChoice(text: v, value: v);
+                          _selectedChoice = updatedTextChoice;
+                        }
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: _singleChoiceAnswerFormat.otherText,
+                      // labelStyle: Theme.of(context).textTheme.headlineSmall,
+                      labelStyle: TextStyle(color: Colors.black),
+                      hintText: 'Escribe otro aquí',
+                      // floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                  ),
+                ),
+              ),
+            ]
           ],
         ),
       ),

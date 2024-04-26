@@ -24,17 +24,20 @@ class _TextAnswerViewState extends State<TextAnswerView> {
   late final DateTime _startDate;
 
   late final TextEditingController _controller;
+  late FocusNode focusNodeText;
   bool _isValid = false;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
+    focusNodeText = FocusNode();
     _textAnswerFormat = widget.questionStep.answerFormat as TextAnswerFormat;
     _controller.text =
         widget.result?.result ?? _textAnswerFormat.defaultValue ?? '';
     _checkValidation(_controller.text);
     _startDate = DateTime.now();
+    focusNodeText.requestFocus();
   }
 
   void _checkValidation(String text) {
@@ -51,6 +54,7 @@ class _TextAnswerViewState extends State<TextAnswerView> {
   @override
   void dispose() {
     _controller.dispose();
+    focusNodeText.dispose();
     super.dispose();
   }
 
@@ -88,7 +92,9 @@ class _TextAnswerViewState extends State<TextAnswerView> {
             width: MediaQuery.of(context).size.width,
             height: 50.0,
             child: TextField(
+              focusNode:focusNodeText,
               textInputAction: TextInputAction.next,
+              // textInputAction: TextInputAction.done,
               autofocus: true,
               decoration: textFieldInputDecoration(
                 hint: _textAnswerFormat.hint,

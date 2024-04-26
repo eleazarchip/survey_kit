@@ -99,7 +99,7 @@ class QuestionStep extends Step {
           result: questionResult as TextQuestionResult?,
         );
       case SingleChoiceAnswerFormat:
-        FocusManager.instance.primaryFocus?.unfocus();
+        // FocusManager.instance.primaryFocus?.unfocus();
         return SingleChoiceAnswerView(
           key: key,
           questionStep: this,

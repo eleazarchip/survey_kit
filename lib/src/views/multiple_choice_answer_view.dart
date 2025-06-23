@@ -162,7 +162,12 @@ class _MultipleChoiceAnswerView extends State<MultipleChoiceAnswerView> {
                               final updatedTextChoice =
                                   TextChoice(text: 'Other', value: v);
                               if (otherTextChoice == null) {
-                                _selectedChoices.add(updatedTextChoice);
+                                // final val = updatedTextChoice is TextChoice ? updatedTextChoice.text : updatedTextChoice;
+                                // _selectedChoices.add(updatedTextChoice);
+                                _selectedChoices = [
+                                  ..._selectedChoices,
+                                  updatedTextChoice
+                                ];
                               } else if (currentIndex != null) {
                                 _selectedChoices[currentIndex!] =
                                     updatedTextChoice;
